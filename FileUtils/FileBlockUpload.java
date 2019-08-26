@@ -97,8 +97,15 @@ public class FileBlockUploadController {
 			// 新建保存文件
             File outputFile = new File(writeFileName);
 
+            // 创建目录
+            if (!outputFile.getParentFile().exists()) {
+            	outputFile.getParentFile().mkdirs();
+            }
+            
             // 创建文件
-            outputFile.createNewFile();
+            if (!outputFile.exists()) {
+            	outputFile.createNewFile();
+            }
 			
 			// 输出流
             FileOutputStream fileOutputStream = new FileOutputStream(outputFile);
@@ -131,10 +138,11 @@ public class FileBlockUploadController {
 			
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
+			return AjaxResult.error("上传失败");
 		} catch (IOException e) {
 			e.printStackTrace();
+			return AjaxResult.error("上传失败");
 		}
 		
-		return AjaxResult.error("上传失败");
 	}
 }
